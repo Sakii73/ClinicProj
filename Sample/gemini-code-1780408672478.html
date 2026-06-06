@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Clinic Queue Management Terminal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================================================
+       Design Tokens & Reset
+       ========================================================================== */
+    :root {
+      --bg-workspace: #0f172a;      /* Dark diagnostic theme background */
+      --bg-surface: #ffffff;        /* Clean clinical surface */
+      --bg-kiosk: #f8fafc;
+      --primary: #2563eb;           /* Trust Blue */
+      --primary-glow: rgba(37, 99, 235, 0.15);
+      --success: #16a34a;           /* Medical Green */
+      --success-glow: rgba(22, 163, 74, 0.1);
+      --text-dark: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --font-main: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-workspace);
+      font-family: var(--font-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      gap: 50px;
+    }
+
+    .section-label {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-align: center;
+      margin-bottom: -30px;
+    }
+
+    /* ==========================================================================
+       INTERFACE 1: Patient Self-Service Kiosk (Check-In)
+       ========================================================================== */
+    .kiosk-window {
+      background: var(--bg-kiosk);
+      width: 100%;
+      max-width: 480px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      border: 4px solid #334155;
+    }
+
+    .kiosk-header {
+      background: var(--primary);
+      color: white;
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    .kiosk-header h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .kiosk-header p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+
+    .kiosk-body {
+      padding: 40px 32px;
+      background: var(--bg-surface);
+    }
+
+    /* Form Fields */
+    .field-group {
+      margin-bottom: 24px;
+    }
+
+    .field-label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      color: var(--text-dark);
+    }
+
+    .kiosk-input {
+      width: 100%;
+      padding: 18px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      text-align: center;
+      letter-spacing: 1px;
+      transition: all 0.2s ease;
+      background: #f8fafc;
+    }
+
+    .kiosk-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 4px var(--primary-glow);
+    }
+
+    /* Touch Buttons */
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 18px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.1s ease;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+      background: #1d4ed8;
+    }
+
+    /* Print Slip Output Mock */
+    .ticket-output {
+      margin-top: 32px;
+      border-top: 2px dashed var(--border);
+      padding-top: 32px;
+      text-align: center;
+    }
+
+    .ticket-slip {
+      background: var(--bg-kiosk);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      position: relative;
+    }
+
+    .ticket-number {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--success);
+      line-height: 1;
+      margin: 12px 0;
+      letter-spacing: -1px;
+    }
+
+    .ticket-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ==========================================================================
+       INTERFACE 2: Live Monitor Display (Waiting Room Screen)
+       ========================================================================== */
+    .monitor-window {
+      background: #1e293b;
+      width: 100%;
+      max-width: 900px;
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      border: 1px solid #334155;
+    }
+
+    .monitor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .monitor-title {
+      color: white;
+      font-size: 1.4rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .monitor-title::before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      background: #ef4444;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    .monitor-time {
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    /* Active Callboard Grid */
+    .board-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .board-column {
+      background: #0f172a;
+      border-radius: var(--radius-md);
+      padding: 24px;
+    }
+
+    .column-title {
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+    }
+
+    .column-title.now-serving { color: #38bdf8; border-bottom: 2px solid #0284c7; }
+    .column-title.up-next { color: #94a3b8; border-bottom: 2px solid #475569; }
+
+    /* Queue Row Items */
+    .queue-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      background: #1e293b;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      border: 1px solid transparent;
+    }
+
+    .board-column:first-child .queue-row:first-child {
+      background: var(--success-glow);
+      border-color: var(--success);
+      animation: flash 2s infinite alternate;
+    }
+
+    .row-ticket {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: white;
+    }
+
+    .board-column:first-child .queue-row:first-child .row-ticket {
+      color: #4ade80;
+    }
+
+    .row-room {
+      color: #cbd5e1;
+      font-weight: 600;
+      font-size: 1.1rem;
+      background: #334155;
+      padding: 6px 14px;
+      border-radius: 8px;
+    }
+
+    /* Keyframe Animations */
+    @keyframes pulse {
+      0% { opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { opacity: 0.4; }
+    }
+
+    @keyframes flash {
+      0% { box-shadow: 0 0 0 0px rgba(22, 163, 74, 0.2); }
+      100% { box-shadow: 0 0 20px 4px rgba(22, 163, 74, 0.4); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="section-label">Patient Terminal View</div>
+  
+  <div class="kiosk-window">
+    <div class="kiosk-header">
+      <h1>Welcome to Metro Health</h1>
+      <p>Please log in or enter your details below</p>
+    </div>
+    
+    <div class="kiosk-body">
+      <div class="field-group">
+        <label class="field-label">APPOINTMENT REFERENCE CODE</label>
+        <input type="text" class="kiosk-input" value="APT-4921" placeholder="e.g., APT-1234">
+      </div>
+      
+      <button class="btn btn-primary">Verify & Check-In</button>
+      
+      <div class="ticket-output">
+        <div class="ticket-slip">
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase;">Your Queue Number</span>
+          <div class="ticket-number">A-108</div>
+          <div style="font-weight: 700; font-size: 1rem;">Proceed to: Pediatrics (Room 03)</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Estimated wait time: ~12 mins</p>
+          
+          <div class="ticket-meta">
+            <span>Date: 06/02/2026</span>
+            <span>Time: 09:57 AM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="section-label">Waiting Room Main Display View</div>
+  
+  <div class="monitor-window">
+    <div class="monitor-header">
+      <div class="monitor-title">LIVE QUEUE STATUS</div>
+      <div class="monitor-time">09:57 AM</div>
+    </div>
+    
+    <div class="board-grid">
+      <div class="board-column">
+        <div class="column-title now-serving">Now Serving</div>
+        
+        <div class="queue-row">
+          <span class="row-ticket">A-108</span>
+          <span class="row-room">Room 03</span>
+        </div>
+        <div class="queue-row">
+          <span class="row-ticket">B-241</span>
+          <span class="row-room">Room 01</span>
+        </div>
+        <div class="queue-row">
+          <span class="row-ticket">A-107</span>
+          <span class="row-room">Room 05</span>
+        </div>
+      </div>
+      
+      <div class="board-column">
+        <div class="column-title up-next">Up Next / Waiting</div>
+        
+        <div class="queue-row">
+          <span class="row-ticket">A-109</span>
+          <span class="row-room">Peds</span>
+        </div>
+        <div class="queue-row">
+          <span class="row-ticket">B-242</span>
+          <span class="row-room">General</span>
+        </div>
+        <div class="queue-row">
+          <span class="row-ticket">C-110</span>
+          <span class="row-room">Dental</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

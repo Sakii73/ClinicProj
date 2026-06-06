@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedQueue - Multi-Role Dashboard</title>
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Top Role Switcher (Simulating Routing) */
+        .role-switcher {
+            background-color: #e2e8f0;
+            padding: 6px;
+            border-radius: 30px;
+            display: flex;
+            gap: 5px;
+            margin-bottom: 30px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .role-btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: transparent;
+            color: #64748b;
+        }
+
+        /* CSS-Only Tab Switching Logic using Hidden Radio Buttons */
+        #client-tab:checked ~ .role-switcher .btn-client,
+        #admin-tab:checked ~ .role-switcher .btn-admin {
+            background-color: #ffffff;
+            color: #0284c7;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        #client-tab:checked ~ .view-container .client-view { display: block; }
+        #admin-tab:checked ~ .view-container .admin-view { display: grid; }
+
+        .radio-toggle { display: none; }
+        .view-panel { display: none; }
+
+        /* Core Layout Containers */
+        .view-container {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        /* ========================================== */
+        /* 1. CLIENT / PATIENT VIEW STYLES            */
+        /* ========================================== */
+        .client-view {
+            max-width: 480px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 40px 30px;
+        }
+
+        .client-header h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        .client-header p {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .ticket-badge {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: white;
+            padding: 35px;
+            border-radius: 12px;
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+        .ticket-badge span {
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+        .ticket-badge h1 {
+            font-size: 56px;
+            font-weight: 800;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-box {
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #f1f5f9;
+        }
+        .stat-box .label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .stat-box .val {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 4px;
+            color: #0f172a;
+        }
+
+        .btn-leave {
+            background: none;
+            border: 1px solid #fca5a5;
+            color: #ef4444;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        .btn-leave:hover { background-color: #fef2f2; }
+
+        /* ========================================== */
+        /* 2. ADMIN / STAFF VIEW STYLES               */
+        /* ========================================== */
+        .admin-view {
+            grid-template-columns: 1.5fr 1fr;
+            height: 600px;
+        }
+
+        .admin-main {
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #e2e8f0;
+        }
+
+        .admin-sidebar {
+            background-color: #f8fafc;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .counter-badge {
+            background-color: #38bdf8;
+            color: #0369a1;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        /* Big Action Station */
+        .serving-station {
+            background-color: #f1f5f9;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 35px;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .serving-station h3 {
+            font-size: 13px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .current-admin-tkt {
+            font-size: 42px;
+            font-weight: 800;
+            color: #0f172a;
+            font-family: monospace;
+            margin-bottom: 5px;
+        }
+
+        .current-pt-name {
+            font-size: 15px;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+
+        .action-cluster {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-action {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-primary { background-color: #10b981; color: white; flex: 1.5; }
+        .btn-primary:hover { background-color: #059669; }
+        .btn-secondary { background-color: #cbd5e1; color: #334155; flex: 1; }
+        .btn-secondary:hover { background-color: #94a3b8; }
+
+        /* Minimal Admin Data Rows */
+        .admin-queue-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .admin-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .admin-row .left-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-row .tkt {
+            font-family: monospace;
+            font-weight: 700;
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .admin-row .name { font-weight: 600; }
+        .admin-row .reason {
+            font-size: 12px;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .btn-call-row {
+            background-color: transparent;
+            border: 1px solid #0ea5e9;
+            color: #0ea5e9;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-call-row:hover {
+            background-color: #0ea5e9;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <input type="radio" id="client-tab" name="view-selector" class="radio-toggle" checked>
+    <input type="radio" id="admin-tab" name="view-selector" class="radio-toggle">
+
+    <div class="role-switcher">
+        <label for="client-tab" class="role-btn btn-client">Patient View</label>
+        <label for="admin-tab" class="role-btn btn-admin">Staff Admin View</label>
+    </div>
+
+    <div class="view-container">
+
+        <div class="view-panel client-view card">
+            <div class="client-header">
+                <h2>Your Virtual Ticket</h2>
+                <p>You can safely step out. We will text you when it's your turn.</p>
+            </div>
+
+            <div class="ticket-badge">
+                <span>Your Queue Number</span>
+                <h1>TKT-085</h1>
+                <span>Status: Waiting</span>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="label">People Ahead</div>
+                    <div class="val">1 Person</div>
+                </div>
+                <div class="stat-box">
+                    <div class="label">Est. Wait Time</div>
+                    <div class="val">~ 3 Mins</div>
+                </div>
+            </div>
+
+            <button class="btn-leave">Leave Queue / Cancel Ticket</button>
+        </div>
+
+        <div class="view-panel admin-view card">
+            
+            <div class="admin-main">
+                <div class="panel-title">Active Station: Desk 1</div>
+                
+                <div class="serving-station">
+                    <h3>Currently Serving</h3>
+                    <div class="current-admin-tkt">TKT-084</div>
+                    <div class="current-pt-name">Sarah Jenkins (General Consultation)</div>
+                    
+                    <div class="action-cluster">
+                        <button class="btn-action btn-primary">✔ Mark Completed & Call Next</button>
+                        <button class="btn-action btn-secondary">No Show</button>
+                    </div>
+                </div>
+
+                <div class="panel-title">
+                    Upcoming Queue Pipeline 
+                    <span class="counter-badge">4 Waiting</span>
+                </div>
+
+                <div class="admin-queue-list">
+                    <div class="admin-row">
+                        <div class="left-info">
+                            <span class="tkt">TKT-085</span>
+                            <span class="name">James R.</span>
+                            <span class="reason">Prescription</span>
+                        </div>
+                        <button class="btn-call-row">Force Call</button>
+                    </div>
+                    <div class="admin-row">
+                        <div class="left-info">
+                            <span class="tkt">TKT-086</span>
+                            <span class="name">Emily D.</span>
+                            <span class="reason">Vaccination</span>
+                        </div>
+                        <button class="btn-call-row">Force Call</button>
+                    </div>
+                    <div class="admin-row">
+                        <div class="left-info">
+                            <span class="tkt">TKT-087</span>
+                            <span class="name">Michael K.</span>
+                            <span class="reason">Consultation</span>
+                        </div>
+                        <button class="btn-call-row">Force Call</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-sidebar">
+                <div class="panel-title">Session Metrics</div>
+                
+                <div class="stats-row" style="grid-template-columns: 1fr; gap: 12px;">
+                    <div class="stat-box">
+                        <div class="label">Avg. Service Duration</div>
+                        <div class="val">8.4 mins</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">Total Served Today</div>
+                        <div class="val">42 Patients</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">Peak Waiting Window</div>
+                        <div class="val">11:00 AM</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
