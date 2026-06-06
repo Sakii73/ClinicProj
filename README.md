@@ -4,7 +4,17 @@ A simple PHP-based clinic appointment and consultation system with user registra
 
 ## Overview
 
-This project provides a front-end user experience for patients and doctors to interact with a clinic application. Users can register, log in, book appointments, and request walk-in consultation tickets.
+This project provides a front-end user experience for patients and doctors to interact with a clinic application.
+
+## Features
+
+- User registration and login with role selection for `Doctor` or `Patient`
+- Appointment booking with validation for full name, phone number, appointment date, and reason for visit
+- Walk-in consultation ticket creation with queue number display and ticket cancellation
+- Scheduled appointment ticket display after booking
+- Client-side validation and interactive feedback in `public/js/main.js`
+- Shared layout templates for consistent header and footer navigation
+- Role-based user types to support admin/doctor workflow in future enhancements
 
 ## User Features
 
