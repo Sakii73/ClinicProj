@@ -1,0 +1,459 @@
+/* Admin specific styles, inheriting variables from style.css */
+
+.admin-body {
+    padding: 0;
+    margin: 0;
+    background-color: var(--background-color);
+}
+
+.admin-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 20px 40px 20px; /* space for fixed navbar */
+}
+
+/* Admin Navbar */
+.admin-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--card-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    z-index: 1000;
+}
+
+.admin-navbar .nav-brand {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-blue);
+    text-decoration: none;
+}
+
+.admin-navbar .nav-links {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.admin-navbar .nav-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 16px;
+    transition: var(--transition);
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+.admin-navbar .nav-links a:hover {
+    color: var(--primary-blue);
+    background-color: #f8fafc;
+}
+
+.admin-navbar .nav-links .active {
+    background-color: #eff6ff;
+    color: var(--primary-blue);
+}
+
+.admin-navbar .nav-links .logout-link {
+    color: #ef4444;
+}
+
+.admin-navbar .nav-links .logout-link:hover {
+    background-color: #fef2f2;
+    color: #dc2626;
+}
+
+/* Main Content Area */
+.admin-main {
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.admin-header h1 {
+    margin: 0;
+    font-size: 28px;
+    color: var(--text-main);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: 600;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-blue);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+/* Dashboard Overview */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.metric-card {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    border-top: 4px solid var(--primary-blue);
+}
+
+.metric-card h3 {
+    color: var(--text-muted);
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.metric-card .value {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.dashboard-split {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+}
+
+.panel {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.panel h2 {
+    text-align: left;
+    font-size: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+}
+
+.activity-list {
+    list-style: none;
+}
+
+.activity-list li {
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+}
+
+.activity-list li:last-child {
+    border-bottom: none;
+}
+
+.activity-time {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* Queue Management */
+.queue-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 30px;
+}
+
+.serving-station {
+    display: flex;
+    flex-direction: column;
+}
+
+.serving-station h2, .queue-header-flex h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.serving-card {
+    background-color: var(--card-bg);
+    padding: 40px 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    border: 2px solid var(--primary-blue);
+    position: relative;
+    overflow: hidden;
+}
+
+.status-label {
+    background-color: #eff6ff;
+    color: var(--primary-blue);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.ticket-display {
+    font-size: 64px;
+    color: var(--text-main);
+    font-weight: 800;
+    margin-bottom: 10px;
+    font-family: monospace;
+}
+
+.patient-name {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.visit-reason {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+}
+
+.queue-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.queue-badge {
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.queue-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.queue-item {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    border-left: 4px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.queue-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.queue-item.next-up {
+    border-left-color: var(--primary-blue);
+}
+
+.q-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.q-ticket {
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary-blue);
+    background-color: #eff6ff;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+.q-name {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.q-reason {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.btn-call {
+    background: transparent;
+    border: 2px solid var(--primary-blue);
+    color: var(--primary-blue);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-call:hover {
+    background-color: var(--primary-blue);
+    color: white;
+}
+
+/* Scrollbar styling for queue list */
+.queue-list::-webkit-scrollbar { width: 6px; }
+.queue-list::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+.queue-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+.queue-list::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* Appointments Table */
+.table-responsive {
+    overflow-x: auto;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-table th, .admin-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.admin-table th {
+    background-color: #f8fafc;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:hover {
+    background-color: #f8fafc;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-confirmed { background: #dcfce7; color: #16a34a; }
+.status-pending { background: #fef3c7; color: #d97706; }
+.status-cancelled { background: #fee2e2; color: #ef4444; }
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-confirm { background: #eff6ff; color: var(--primary-blue); }
+.btn-confirm:hover { background: var(--primary-blue); color: white; }
+.btn-cancel { background: #fee2e2; color: #ef4444; margin-left: 8px; }
+.btn-cancel:hover { background: #ef4444; color: white; }
+
+/* Staff Grid */
+.staff-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.staff-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    transition: var(--transition);
+}
+
+.staff-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    border-color: var(--primary-blue);
+}
+
+.staff-avatar {
+    width: 60px;
+    height: 60px;
+    background: #e0e7ff;
+    color: #4f46e5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.staff-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+.staff-role {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.staff-status {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.staff-status.online { background-color: #22c55e; }
+.staff-status.offline { background-color: #94a3b8; }

@@ -18,17 +18,17 @@ This project provides a front-end user experience for patients and doctors to in
 
 ## User Features
 
-- Login page (`views/login.php`)
+- Login page (`views/patient/login.php`)
   - Username and password form
   - Navigation to registration
-- Registration page (`views/register.php`)
+- Registration page (`views/patient/register.php`)
   - Username, age, full name, and password fields
   - Role selection: `Doctor` or `Patient`
   - Redirects back to login after account creation
-- Home page (`views/home.php`)
+- Home page (`views/patient/home.php`)
   - Welcome message and links to main actions
   - Quick access to: Online Consultation, Our Services, Book an Appointment
-- Book Appointment page (`views/book.php`)
+- Book Appointment page (`views/patient/book.php`)
   - Patient booking form with:
     - Full name
     - Phone number
@@ -36,17 +36,17 @@ This project provides a front-end user experience for patients and doctors to in
     - Reason for visit
   - Form validation for required fields, valid phone number, and non-past date
   - Submission opens the schedule ticket page
-- Consult Now page (`views/consult.php`)
+- Consult Now page (`views/patient/consult.php`)
   - Walk-in consultation form with:
     - Full name
     - Phone number for SMS alert
     - Reason for visit
   - Form validation for required fields and valid phone number
   - Submission opens the walk-in ticket page
-- Walk-in Ticket page (`views/walk_in_ticket.php`)
+- Walk-in Ticket page (`views/patient/walk_in_ticket.php`)
   - Displays a queue number and status updates
   - Includes a cancel ticket button that returns to home
-- Schedule Ticket page (`views/schedule_ticket.php`)
+- Schedule Ticket page (`views/patient/schedule_ticket.php`)
   - Displays a scheduled appointment ticket with placeholder patient information
   - Includes a link back to home
 
@@ -65,34 +65,36 @@ This project provides a front-end user experience for patients and doctors to in
 
 ## Admin Features
 
-- The current codebase does not include a separate admin dashboard or admin-specific pages.
-- The registration form does allow selecting a role (`Doctor` or `Patient`), but there is no implemented admin control panel or role-based access control in the current views.
+- Admin Dashboard implemented with separate pages and a top navigation bar (Multi-Page Application).
+- **Dashboard Overview (`views/admin/dashboard.php`)**: Key metrics and quick actions.
+- **Queue Management (`views/admin/queue.php`)**: Active station view to handle walk-in patients from `consult.php`.
+- **Appointments Management (`views/admin/appointments.php`)**: Table view to confirm or cancel scheduled appointments coming from `book.php`.
+- **Staff & Doctors (`views/admin/staff.php`)**: Grid view to monitor registered medical staff and their duty status.
+- Note: Currently purely front-end with hardcoded HTML for demonstration.
 
 ## Notes
 
 - `index.php` redirects to the login page by default.
-- Shared header and footer are included from `views/layouts/header.php` and `views/layouts/footer.php`.
+- Shared header and footer are included from `views/patient/layouts/header.php` and `views/patient/layouts/footer.php`.
 - The project appears to be a front-end prototype; backend data handling and persistent user/session management are not present in the current files.
 
 ## Run Instructions
 
 1. Place the `ClinicProj` folder in your PHP server root (for example, XAMPP `htdocs`).
 2. Open `http://localhost/ClinicProj/` in the browser.
-3. The app redirects automatically to `views/login.php`.
+3. The app redirects automatically to `views/patient/login.php`.
 
 ## File Structure
 
 - `index.php`
 - `views/`
-  - `login.php`
-  - `register.php`
-  - `home.php`
-  - `book.php`
-  - `consult.php`
-  - `schedule_ticket.php`
-  - `walk_in_ticket.php`
-  - `services.php`
-  - `layouts/header.php`
-  - `layouts/footer.php`
-- `public/js/main.js`
+  - `patient/`
+    - `home.php`, `book.php`, `consult.php`, `login.php`, `register.php`, etc. (Patient-facing views)
+    - `layouts/header.php`, `layouts/footer.php`
+  - `admin/`
+    - `dashboard.php`, `queue.php`, `appointments.php`, `staff.php`
+    - `layouts/admin_header.php`, `layouts/admin_footer.php`
+- `public/`
+  - `css/`
+  - `js/`
 - `models/` and `controllers/` folders are present but currently contain placeholder text files.

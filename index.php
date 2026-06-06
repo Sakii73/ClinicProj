@@ -1,1 +1,1 @@
-<?php header('Location: views/login.php'); exit; ?>
+<?php header('Location: views/patient/login.php'); exit; ?>
