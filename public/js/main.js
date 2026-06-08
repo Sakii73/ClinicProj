@@ -15,7 +15,7 @@ $(document).ready(function () {
     }
 
     // ── Walk-in Form (consult.php) ────────────────────────
-    $("form[action='walk_in_ticket.php']").on("submit", function (e) {
+    $("form[action='../../controllers/ticket_controller.php']").on("submit", function (e) {
         const form = $(this);
         clearErrors(form);
         let valid = true;
@@ -43,7 +43,7 @@ $(document).ready(function () {
     });
 
     // ── Book Appointment Form (book.php) ──────────────────
-    $("form[action='schedule_ticket.php']").on("submit", function (e) {
+    $("form[action='../../controllers/appointment_controller.php']").on("submit", function (e) {
         const form = $(this);
         clearErrors(form);
         let valid = true;

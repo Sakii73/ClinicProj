@@ -13,11 +13,14 @@ include 'layouts/header.php';
 
     <div class="ticket-box">
         <h2 style="font-size: 20px; font-weight: normal; margin-bottom: 5px;">Your Queue Number</h2>
-        <div class="queue-number">TKT - 001</div>
+        <div class="queue-number"><?php echo htmlspecialchars($_SESSION['ticket_number'] ?? 'TKT-000'); ?></div>
         <p style="font-size: 18px;">Status : Waiting</p>
     </div>
     
-    <button class="cancel-btn" onclick="window.location.href='home.php'">Leave Queue / Cancel Ticket</button>
+    <form action="../../controllers/ticket_controller.php" method="POST" style="margin-top: 20px;">
+        <input type="hidden" name="cancel_ticket" value="<?php echo $_SESSION['ticket_id'] ?? 0; ?>">
+        <button type="submit" class="cancel-btn">Leave Queue / Cancel Ticket</button>
+    </form>
 </div>
 
 <?php include 'layouts/footer.php'; ?>

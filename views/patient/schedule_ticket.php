@@ -14,10 +14,10 @@ include 'layouts/header.php';
     <div class="ticket-box">
         <h2 style="font-size: 28px; font-weight: 600;">Patient<br>Information</h2>
         
-        <input type="text" class="form-control" value="Full Name" readonly>
-        <input type="text" class="form-control" value="Phone Number (For SMS Alert)" readonly>
-        <input type="text" class="form-control" value="Reason for Visit" readonly>
-        <input type="text" class="form-control" value="Date" readonly>
+        <input type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION['appt_name'] ?? 'Full Name'); ?>" readonly>
+        <input type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION['appt_phone'] ?? 'Phone Number'); ?>" readonly>
+        <input type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION['appt_reason'] ?? 'Reason for Visit'); ?>" readonly>
+        <input type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION['appt_date'] ?? 'Date'); ?>" readonly>
     </div>
     
     <div style="text-align: center; margin-top: 20px;">

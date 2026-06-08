@@ -9,7 +9,12 @@ include 'layouts/header.php';
     
     <div class="center-card" style="width: 500px; padding: 40px;">
         <h2 style="font-size: 28px; margin-bottom: 25px;">Patient Form</h2>
-        <form action="walk_in_ticket.php" method="GET">
+        <?php if (isset($_SESSION['error'])): ?>
+            <div style="color: red; margin-bottom: 10px; text-align: center;">
+                <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
+            </div>
+        <?php endif; ?>
+        <form action="../../controllers/ticket_controller.php" method="POST">
             <div class="form-group">
                 <input type="text" name="fullname" class="form-control" placeholder="Full Name" style="text-align: center;">
             </div>

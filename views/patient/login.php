@@ -7,7 +7,18 @@ include 'layouts/header.php';
 
 <div class="center-card animate-fade-in">
     <h1>Login</h1>
-    <form action="home.php" method="GET">
+    <?php if (isset($_SESSION['error'])): ?>
+        <div style="color: red; margin-bottom: 10px; text-align: center;">
+            <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
+        </div>
+    <?php endif; ?>
+    <?php if (isset($_SESSION['success'])): ?>
+        <div style="color: green; margin-bottom: 10px; text-align: center;">
+            <?php echo $_SESSION['success']; unset($_SESSION['success']); ?>
+        </div>
+    <?php endif; ?>
+    <form action="../../controllers/auth_controller.php" method="POST">
+        <input type="hidden" name="action" value="login">
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" class="form-control" placeholder="Enter Username">
