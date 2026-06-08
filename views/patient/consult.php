@@ -5,7 +5,7 @@ include 'layouts/header.php';
 
 <div class="container animate-fade-in" style="margin-top: 100px; text-align: center;">
     <h1 style="font-size: 50px; margin-bottom: 5px;">Consult Now</h1>
-    <p style="font-size: 18px; color: var(--text-muted); margin-bottom: 40px;">Short Description</p>
+    <p style="font-size: 18px; color: var(--text-muted); margin-bottom: 40px;">Start a walk-in consultation today and receive fast, friendly care from our clinical support team.</p>
     
     <div class="center-card" style="width: 500px; padding: 40px;">
         <h2 style="font-size: 28px; margin-bottom: 25px;">Patient Form</h2>

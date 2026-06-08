@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clinic Appointment System</title>
+    <title>CliniCare - Clinic Appointment System</title>
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +20,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- Optional Navbar if $showNav is true -->
     <?php if(isset($showNav) && $showNav): ?>
     <nav class="navbar animate-fade-in">
-        <a href="home.php" class="nav-brand">App Name</a>
+        <a href="home.php" class="nav-brand">CliniCare</a>
         <div class="nav-links">
             <!-- Hamburger menu implementation -->
             <div class="hamburger-menu">

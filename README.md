@@ -1,4 +1,4 @@
-# ClinicProj
+# CliniCare
 
 A simple PHP-based clinic appointment and consultation system with user registration, login, and ticket generation flows.
 
@@ -80,8 +80,8 @@ This project provides a front-end user experience for patients and doctors to in
 
 ## Run Instructions
 
-1. Place the `ClinicProj` folder in your PHP server root (for example, XAMPP `htdocs`).
-2. Open `http://localhost/ClinicProj/` in the browser.
+1. Place the `CliniCare` folder in your PHP server root (for example, XAMPP `htdocs`).
+2. Open `http://localhost/CliniCare/` in the browser.
 3. The app redirects automatically to `views/patient/login.php`.
 
 ## File Structure

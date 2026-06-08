@@ -1,8 +1,3 @@
--- ============================================================
---  models/db_clinic.sql  –  Clinic Queue Management System
---  Improved version with timestamps and email
--- ============================================================
-
 CREATE DATABASE IF NOT EXISTS db_clinic CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE db_clinic;
 
@@ -10,7 +5,6 @@ USE db_clinic;
 CREATE TABLE IF NOT EXISTS users (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     username    VARCHAR(50)  NOT NULL UNIQUE,
-    email       VARCHAR(100) NULL UNIQUE,
     full_name   VARCHAR(100) NOT NULL,
     age         TINYINT UNSIGNED,
     password    VARCHAR(255) NOT NULL,          -- bcrypt hash
@@ -66,15 +60,9 @@ CREATE TABLE IF NOT EXISTS activity_log (
     logged_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ============================================================
---  SEED DATA
--- ============================================================
-
-INSERT IGNORE INTO users (username, email, full_name, age, password, role, is_online) VALUES
-('admin',   'admin@clinic.local', 'Admin Leo',   30, '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin',   1),
-('dreyes',  'dreyes@clinic.local','Dr. Reyes',   45, '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'doctor',  1),
-('dsantos', 'dsantos@clinic.local','Dr. Santos',  38, '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'doctor',  0),
-('jdoe',    'jdoe@patient.local',  'John Doe',    28, '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'patient', 0);
+INSERT IGNORE INTO users (username, full_name, age, password, role, is_online) VALUES
+('admin',   'Admin',   30, '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'doctor',   1),
+('patient',    'Patient',    28, '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'patient', 1);
 
 INSERT IGNORE INTO services (name, description) VALUES
 ('General Checkup',      'Routine physical examination and health assessment.'),

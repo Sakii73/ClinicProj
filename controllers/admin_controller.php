@@ -4,6 +4,7 @@ require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../models/Ticket.php';
 require_once __DIR__ . '/../models/Appointment.php';
 require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/../models/Service.php';
 require_once __DIR__ . '/../models/ActivityLog.php';
 
 $action = trim($_REQUEST['action'] ?? '');
@@ -219,6 +220,25 @@ switch ($action) {
         }
         $_SESSION['error'] = $message;
         $redirect = '../views/admin/appointments.php';
+        break;
+
+    case 'add_service':
+        $serviceModel = new Service($conn);
+        $name = trim($_POST['name'] ?? '');
+        $description = trim($_POST['description'] ?? '');
+
+        if ($name === '' || $description === '') {
+            $message = 'Please provide both service name and description.';
+            $_SESSION['error'] = $message;
+            $redirect = '../views/admin/services.php';
+            break;
+        }
+
+        $serviceModel->create($name, $description);
+        $message = "Service '{$name}' added successfully.";
+        $logModel->log($message);
+        $_SESSION['success'] = $message;
+        $redirect = '../views/admin/services.php';
         break;
 
     default:
