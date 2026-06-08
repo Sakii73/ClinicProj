@@ -1,3 +1,21 @@
+<?php
+require_once __DIR__ . '/../../config/db.php';
+require_once __DIR__ . '/../../models/Ticket.php';
+require_once __DIR__ . '/../../models/Appointment.php';
+require_once __DIR__ . '/../../models/User.php';
+require_once __DIR__ . '/../../models/ActivityLog.php';
+
+$ticketModel = new Ticket($conn);
+$apptModel = new Appointment($conn);
+$userModel = new User($conn);
+$logModel = new ActivityLog($conn);
+
+$pendingAppointments = $apptModel->getCountByStatus('pending');
+$staffOnDuty = $userModel->countOnlineStaff();
+$waitingCount = $ticketModel->getCountByStatus('waiting');
+$recentActivities = $logModel->getRecent(5);
+?>
+
 <?php include 'layouts/admin_header.php'; ?>
 
 <!-- Header -->
@@ -9,38 +27,36 @@
     </div>
 </header>
 
-<section class="animate-fade-in">
+<section class="animate-fade-in" id="dashboard-page">
     <div class="metrics-grid">
         <div class="metric-card">
             <h3>Pending Appointments</h3>
-            <div class="value">2</div>
+            <div class="value" id="pending-appointments-count"><?= htmlspecialchars($pendingAppointments) ?></div>
         </div>
         <div class="metric-card">
             <h3>Staff On Duty</h3>
-            <div class="value">2</div>
+            <div class="value" id="staff-on-duty-count"><?= htmlspecialchars($staffOnDuty) ?></div>
         </div>
         <div class="metric-card">
             <h3>Walk-ins Waiting</h3>
-            <div class="value">3</div>
+            <div class="value" id="waiting-count"><?= htmlspecialchars($waitingCount) ?></div>
         </div>
     </div>
 
     <div class="dashboard-split">
         <div class="panel">
             <h2>Recent Activity</h2>
-            <ul class="activity-list">
-                <li>
-                    <span>New walk-in patient added to queue</span>
-                    <span class="activity-time">10:15 AM</span>
-                </li>
-                <li>
-                    <span>Ticket TKT-041 marked completed</span>
-                    <span class="activity-time">09:10 AM</span>
-                </li>
-                <li>
-                    <span>Dr. Reyes started session</span>
-                    <span class="activity-time">08:00 AM</span>
-                </li>
+            <ul class="activity-list" id="recent-activity-list">
+                <?php if (empty($recentActivities)): ?>
+                    <li style="color: var(--text-muted);">No recent activity yet.</li>
+                <?php else: ?>
+                    <?php foreach ($recentActivities as $activity): ?>
+                        <li>
+                            <span><?= htmlspecialchars($activity['description']) ?></span>
+                            <span class="activity-time"><?= date('M d, H:i', strtotime($activity['logged_at'])) ?></span>
+                        </li>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </ul>
         </div>
         <div class="panel">

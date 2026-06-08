@@ -148,7 +148,7 @@ $(document).ready(function () {
     $(".nav-links a[href='#']").on("click", function (e) {
         e.preventDefault();
         const menu = $(".nav-links");
-        menu.find("a:not(:last-child)").slideToggle(300);
+        menu.children().not(":last-child").slideToggle(300);
     });
 
     // ── Real-time Form Feedback ───────────────────────────

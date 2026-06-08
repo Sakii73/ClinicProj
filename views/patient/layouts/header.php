@@ -25,11 +25,13 @@ if (session_status() === PHP_SESSION_NONE) {
             <a href="services.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'services.php') ? 'active' : '' ?>">Services</a>
             <a href="book.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'book.php') ? 'active' : '' ?>">Book Now</a>
             <a href="consult.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'consult.php') ? 'active' : '' ?>">Consult Now</a>
-            <?php if (isset($_SESSION['user_id'])): ?>
+            <?php if (!empty($_SESSION['user_id'])): ?>
                 <form action="../../controllers/auth_controller.php" method="POST" style="display:inline;">
                     <input type="hidden" name="action" value="logout">
                     <button type="submit" style="background:none; border:none; color:inherit; cursor:pointer; font-size:inherit; font-family:inherit; padding:0; margin-left:15px;">Logout (<?= htmlspecialchars($_SESSION['username']) ?>)</button>
                 </form>
+            <?php else: ?>
+                <a href="login.php" style="margin-left:15px;">Login</a>
             <?php endif; ?>
             <!-- Hamburger icon mockup -->
             <a href="#" style="font-size: 24px;">&#9776;</a>

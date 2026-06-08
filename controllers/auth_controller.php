@@ -69,9 +69,15 @@ if ($action === 'register') {
     }
 
     $hash = password_hash($password, PASSWORD_BCRYPT);
-    $userModel->create($username, $fullname, $age, $hash, $role);
+    $userId = $userModel->create($username, $fullname, $age, $hash, $role);
 
-    $_SESSION['success'] = 'Account created! You can now log in.';
+    if ($role === 'doctor') {
+        $logModel->log("Doctor account created: {$fullname}");
+        $_SESSION['success'] = 'Doctor account created and added to the staff list. You can now log in.';
+    } else {
+        $_SESSION['success'] = 'Account created! You can now log in.';
+    }
+
     header('Location: ../views/patient/login.php');
     exit;
 }

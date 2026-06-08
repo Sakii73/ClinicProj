@@ -31,4 +31,17 @@ class User {
         $stmt->execute();
         return $this->conn->insert_id;
     }
+
+    public function getStaffList(): array {
+        $result = $this->conn->query("SELECT id, full_name, role, is_online FROM users WHERE role IN ('doctor','admin') ORDER BY full_name ASC");
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function countOnlineStaff(): int {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) as count FROM users WHERE role IN ('doctor','admin') AND is_online = 1");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return (int) ($row['count'] ?? 0);
+    }
 }

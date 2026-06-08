@@ -16,7 +16,7 @@ include 'layouts/header.php';
     </div>
     
     <p style="margin-bottom: 15px; font-size: 18px;">About Us?</p>
-    <a href="#" class="btn btn-outline" style="width: auto; padding: 12px 40px; border-radius: 40px;">Our Team</a>
+    <a href="team.php" class="btn btn-outline" style="width: auto; padding: 12px 40px; border-radius: 40px;">Our Team</a>
 </div>
 
 <?php include 'layouts/footer.php'; ?>
