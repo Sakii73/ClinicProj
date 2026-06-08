@@ -32,6 +32,25 @@ class User {
         return $this->conn->insert_id;
     }
 
+    public function findById(int $id) {
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE id = ? LIMIT 1");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc() ?: false;
+    }
+
+    public function deleteById(int $id): bool {
+        $stmt = $this->conn->prepare("DELETE FROM users WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        return $stmt->execute();
+    }
+
+    public function getPatientList(): array {
+        $result = $this->conn->query("SELECT id, username, full_name, age, is_online FROM users WHERE role = 'patient' ORDER BY full_name ASC");
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function getStaffList(): array {
         $result = $this->conn->query("SELECT id, full_name, role, is_online FROM users WHERE role IN ('doctor','admin') ORDER BY full_name ASC");
         return $result->fetch_all(MYSQLI_ASSOC);

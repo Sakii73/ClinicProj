@@ -241,6 +241,47 @@ switch ($action) {
         $redirect = '../views/admin/services.php';
         break;
 
+    case 'delete_user':
+        $targetUserId = (int)($_POST['user_id'] ?? 0);
+        $currentRole = $_SESSION['role'] ?? '';
+        $currentUserId = $_SESSION['user_id'] ?? 0;
+
+        if (!in_array($currentRole, ['admin', 'doctor'], true)) {
+            $message = 'Only admins and doctors can delete patient accounts.';
+            $_SESSION['error'] = $message;
+            $redirect = '../views/admin/staff.php';
+            break;
+        }
+
+        if ($targetUserId <= 0 || $targetUserId === $currentUserId) {
+            $message = 'Invalid user deletion request.';
+            $_SESSION['error'] = $message;
+            $redirect = '../views/admin/staff.php';
+            break;
+        }
+
+        $targetUser = $userModel->findById($targetUserId);
+        if (!$targetUser) {
+            $message = 'User not found.';
+            $_SESSION['error'] = $message;
+            $redirect = '../views/admin/staff.php';
+            break;
+        }
+
+        if ($currentRole === 'doctor' && $targetUser['role'] !== 'patient') {
+            $message = 'Doctors may only delete patient accounts.';
+            $_SESSION['error'] = $message;
+            $redirect = '../views/admin/staff.php';
+            break;
+        }
+
+        $userModel->deleteById($targetUserId);
+        $message = "User '{$targetUser['full_name']}' ({$targetUser['role']}) has been removed.";
+        $logModel->log($message);
+        $_SESSION['success'] = $message;
+        $redirect = '../views/admin/staff.php';
+        break;
+
     default:
         if ($ajax) {
             jsonResponse(['success' => false, 'message' => 'Invalid admin action.']);

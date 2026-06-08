@@ -3,7 +3,7 @@ $showNav = false;
 include 'layouts/header.php'; 
 ?>
 
-<div class="top-title">App Name</div>
+<div class="top-title">CliniCare</div>
 
 <div class="center-card animate-fade-in">
     <h1>Login</h1>

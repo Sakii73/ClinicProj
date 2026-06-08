@@ -104,6 +104,81 @@ $(document).ready(function () {
         }
     });
 
+    // ── AJAX registration for patient creation ─────────────
+    $("#register-form").on("submit", function (e) {
+        const form = $(this);
+        if (form.attr("action") !== "../../controllers/auth_controller.php") {
+            return;
+        }
+
+        clearErrors(form);
+        let valid = true;
+
+        const username = form.find("input[name='username']");
+        const fullname = form.find("input[name='fullname']");
+        const age = form.find("input[name='age']");
+        const password = form.find("input[name='password']");
+
+        if (username.val().trim().length < 3) {
+            showError(username, "Enter a username with at least 3 characters.");
+            valid = false;
+        }
+
+        if (fullname.val().trim().length < 3) {
+            showError(fullname, "Full name must be at least 3 characters.");
+            valid = false;
+        }
+
+        if (!/^[1-9][0-9]*$/.test(age.val().trim())) {
+            showError(age, "Enter a valid age.");
+            valid = false;
+        }
+
+        if (password.val().trim().length < 6) {
+            showError(password, "Password must be at least 6 characters.");
+            valid = false;
+        }
+
+        if (!valid) {
+            e.preventDefault();
+            return;
+        }
+
+        e.preventDefault();
+        const submitBtn = form.find("button[type='submit']");
+        submitBtn.text("Creating...").prop("disabled", true).css("opacity", "0.7");
+
+        const data = form.serialize() + "&ajax=1";
+
+        $.ajax({
+            url: form.attr("action"),
+            method: "POST",
+            data: data,
+            dataType: "json",
+        }).done(function (response) {
+            const result = $("#register-result");
+            if (response.success) {
+                result.html(`
+                    <div style="padding: 18px; border-radius: 16px; background: #d1fae5; color: #064e3b; border: 1px solid #a7f3d0;">
+                        <strong>${response.message}</strong>
+                        <div style="margin-top: 10px; color: #134e4a;">
+                            Username: <strong>${response.user.username}</strong><br>
+                            Name: <strong>${response.user.full_name}</strong><br>
+                            Role: <strong>${response.user.role}</strong>
+                        </div>
+                    </div>
+                `).show();
+                form[0].reset();
+            } else {
+                result.html(`<div style="padding: 18px; border-radius: 16px; background: #fee2e2; color: #991b1b; border: 1px solid #fecaca;">${response.message}</div>`).show();
+            }
+        }).fail(function () {
+            $("#register-result").html(`<div style="padding: 18px; border-radius: 16px; background: #fee2e2; color: #991b1b; border: 1px solid #fecaca;">An error occurred while creating your account. Please try again.</div>`).show();
+        }).always(function () {
+            submitBtn.text("Create Account").prop("disabled", false).css("opacity", "1");
+        });
+    });
+
     $(".form-control").on("focus", function () {
         $(this).closest(".form-group").find("label").css({
             color: "var(--primary-blue)",

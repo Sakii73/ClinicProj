@@ -1,3 +1,9 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$adminDisplayName = $_SESSION['full_name'] ?? $_SESSION['username'] ?? 'Admin';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +36,7 @@
                     <a href="staff.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'staff.php') ? 'active' : '' ?>">Staff</a>
                     
                     <div style="padding: 12px 16px; font-size: 14px; color: var(--text-muted); border-bottom: 1px solid var(--border-color); border-top: 1px solid var(--border-color);">
-                        Signed in as <br><b>Admin</b>
+                        Signed in as <br><b><?= htmlspecialchars($adminDisplayName) ?></b>
                     </div>
                     <a href="../patient/login.php">Logout</a>
                 </div>

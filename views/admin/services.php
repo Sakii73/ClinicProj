@@ -12,8 +12,8 @@ $services = $serviceModel->getAll();
 <header class="admin-header">
     <h1 id="page-title">Services Management</h1>
     <div class="user-info">
-        <span>Admin User</span>
-        <div class="avatar">A</div>
+        <span><?= htmlspecialchars($_SESSION['full_name'] ?? $_SESSION['username'] ?? 'Admin User') ?></span>
+        <div class="avatar"><?= htmlspecialchars(substr($_SESSION['full_name'] ?? $_SESSION['username'] ?? 'A', 0, 1)) ?></div>
     </div>
 </header>
 

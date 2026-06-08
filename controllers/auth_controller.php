@@ -5,9 +5,16 @@ require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../models/ActivityLog.php';
 
 $action = $_POST['action'] ?? '';
+$ajax = isset($_POST['ajax']) && $_POST['ajax'] === '1';
 
 $userModel = new User($conn);
 $logModel = new ActivityLog($conn);
+
+function jsonResponse(array $data): void {
+    header('Content-Type: application/json');
+    echo json_encode($data);
+    exit;
+}
 
 // ─── LOGIN ───────────────────────────────────────────────────
 if ($action === 'login') {
@@ -70,6 +77,22 @@ if ($action === 'register') {
 
     $hash = password_hash($password, PASSWORD_BCRYPT);
     $userId = $userModel->create($username, $fullname, $age, $hash, $role);
+
+    if ($ajax) {
+        $message = ($role === 'doctor')
+            ? 'Doctor account created and added to the staff list. You can now log in.'
+            : 'Patient account created successfully. You can now log in.';
+        jsonResponse([
+            'success' => true,
+            'message' => $message,
+            'user' => [
+                'id' => $userId,
+                'username' => $username,
+                'full_name' => $fullname,
+                'role' => $role,
+            ],
+        ]);
+    }
 
     if ($role === 'doctor') {
         $logModel->log("Doctor account created: {$fullname}");

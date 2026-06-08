@@ -7,12 +7,13 @@ include 'layouts/header.php';
 
 <div class="center-card animate-fade-in" style="margin-top: 60px;">
     <h1>Create Account</h1>
+    <div id="register-result" style="display:none; margin-bottom: 20px;"></div>
     <?php if (isset($_SESSION['error'])): ?>
         <div style="color: red; margin-bottom: 10px; text-align: center;">
             <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
         </div>
     <?php endif; ?>
-    <form action="../../controllers/auth_controller.php" method="POST">
+    <form id="register-form" action="../../controllers/auth_controller.php" method="POST">
         <input type="hidden" name="action" value="register">
         <div class="form-group">
             <label for="username">Username:</label>
