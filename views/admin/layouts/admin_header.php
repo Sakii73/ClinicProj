@@ -19,13 +19,44 @@
     <nav class="admin-navbar animate-fade-in">
         <a href="dashboard.php" class="nav-brand">AdminPanel</a>
         <div class="nav-links">
-            <a href="dashboard.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'dashboard.php') ? 'active' : '' ?>">Overview</a>
-            <a href="queue.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'queue.php') ? 'active' : '' ?>">Queue</a>
-            <a href="appointments.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'appointments.php') ? 'active' : '' ?>">Appointments</a>
-            <a href="staff.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'staff.php') ? 'active' : '' ?>">Staff</a>
-            <a href="../patient/login.php" class="logout-link">Logout</a>
+            <!-- Hamburger menu implementation -->
+            <div class="hamburger-menu">
+                <a href="#" class="hamburger-icon" id="adminHamburgerIcon" onclick="toggleHamburgerMenu(event, 'adminHamburgerDropdown')">&#9776;</a>
+                <div class="hamburger-dropdown" id="adminHamburgerDropdown">
+                    <a href="dashboard.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'dashboard.php') ? 'active' : '' ?>">Overview</a>
+                    <a href="queue.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'queue.php') ? 'active' : '' ?>">Queue</a>
+                    <a href="appointments.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'appointments.php') ? 'active' : '' ?>">Appointments</a>
+                    <a href="staff.php" class="<?= (basename($_SERVER['PHP_SELF']) == 'staff.php') ? 'active' : '' ?>">Staff</a>
+                    
+                    <div style="padding: 12px 16px; font-size: 14px; color: var(--text-muted); border-bottom: 1px solid var(--border-color); border-top: 1px solid var(--border-color);">
+                        Signed in as <br><b>Admin</b>
+                    </div>
+                    <a href="../patient/login.php">Logout</a>
+                </div>
+            </div>
         </div>
     </nav>
+
+    <script>
+        function toggleHamburgerMenu(event, dropdownId) {
+            event.preventDefault();
+            var dropdown = document.getElementById(dropdownId);
+            dropdown.classList.toggle('show');
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.hamburger-icon')) {
+                var dropdowns = document.getElementsByClassName("hamburger-dropdown");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        });
+    </script>
 
     <?php if (!empty($_SESSION['success']) || !empty($_SESSION['error'])): ?>
         <div class="admin-flash-message" style="padding: 14px 20px; max-width: 1100px; margin: 20px auto 0; border-radius: 10px; font-weight: 500;">
