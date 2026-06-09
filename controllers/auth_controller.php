@@ -63,6 +63,9 @@ if ($action === 'register') {
     $role      = $_POST['role']      ?? 'patient';
 
     if (empty($username) || empty($fullname) || empty($password) || $age <= 0) {
+        if ($ajax) {
+            jsonResponse(['success' => false, 'message' => 'All fields are required.']);
+        }
         $_SESSION['error'] = 'All fields are required.';
         header('Location: ../views/patient/register.php');
         exit;
@@ -70,6 +73,9 @@ if ($action === 'register') {
 
     // Username uniqueness check
     if ($userModel->findByUsername($username)) {
+        if ($ajax) {
+            jsonResponse(['success' => false, 'message' => 'Username already taken. Please choose another.']);
+        }
         $_SESSION['error'] = 'Username already taken. Please choose another.';
         header('Location: ../views/patient/register.php');
         exit;

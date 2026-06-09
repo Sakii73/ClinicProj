@@ -96,7 +96,8 @@ $(document).ready(function () {
     });
 
     // ── Form Feedback Animations ──────────────────────────
-    $("form").on("submit", function () {
+    $("form").not("#register-form").on("submit", function (e) {
+        if (e.isDefaultPrevented()) return;
         const btn = $(this).find("button[type='submit']");
         if ($(".input-error").length === 0) {
             btn.text("Submitting...").prop("disabled", true);
