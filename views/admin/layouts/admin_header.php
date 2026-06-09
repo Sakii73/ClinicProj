@@ -65,18 +65,22 @@ $adminDisplayName = $_SESSION['full_name'] ?? $_SESSION['username'] ?? 'Admin';
         });
     </script>
 
-    <?php if (!empty($_SESSION['success']) || !empty($_SESSION['error'])): ?>
-        <div class="admin-flash-message" style="padding: 14px 20px; max-width: 1100px; margin: 20px auto 0; border-radius: 10px; font-weight: 500;">
-            <?php if (!empty($_SESSION['success'])): ?>
-                <div style="color: #166534; background: #d1fae5; border: 1px solid #a7f3d0;"><?= htmlspecialchars($_SESSION['success']) ?></div>
-            <?php endif; ?>
-            <?php if (!empty($_SESSION['error'])): ?>
-                <div style="color: #991b1b; background: #fef2f2; border: 1px solid #fecaca;"><?= htmlspecialchars($_SESSION['error']) ?></div>
-            <?php endif; ?>
-        </div>
-        <?php unset($_SESSION['success'], $_SESSION['error']); ?>
-    <?php endif; ?>
-
     <div class="admin-container">
+        <?php if (!empty($_SESSION['success']) || !empty($_SESSION['error'])): ?>
+            <div class="admin-flash-message" style="margin-bottom: 24px;">
+                <?php if (!empty($_SESSION['success'])): ?>
+                    <div style="padding: 14px 20px; border-radius: 10px; font-weight: 500; color: #166534; background: #d1fae5; border: 1px solid #a7f3d0;">
+                        <?= htmlspecialchars($_SESSION['success']) ?>
+                    </div>
+                <?php endif; ?>
+                <?php if (!empty($_SESSION['error'])): ?>
+                    <div style="padding: 14px 20px; border-radius: 10px; font-weight: 500; color: #991b1b; background: #fef2f2; border: 1px solid #fecaca;">
+                        <?= htmlspecialchars($_SESSION['error']) ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <?php unset($_SESSION['success'], $_SESSION['error']); ?>
+        <?php endif; ?>
+
         <!-- Main Content -->
         <main class="admin-main">
